@@ -81,3 +81,7 @@ const countWords = () => {
     /// Currently, counts a new word as soon as a space is detected, look into regex?
 }
 
+// //TO DO :
+// implement timeSinceLastType() listener + consequences
+// bonuses? quote api could be neat 
+// styling ugh
