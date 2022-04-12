@@ -3,6 +3,7 @@ let time;
 let grace;
 let difficulty;
 let running;
+let countdown;
 
 submit.addEventListener("click", (e) => {
   e.preventDefault();
@@ -21,6 +22,7 @@ const setSettings = () => {
 
   time = document.querySelector('input[name="time"]').value * 60;
   grace = document.querySelector("select[name=grace-period]").value;
+  countdown = grace;
 
   console.log(difficulty);
   console.log(time);
@@ -43,8 +45,19 @@ const startEditor = () => {
 
 const tick = () => {
   let timer = document.querySelector("#timer");
+  let wordCount = document.querySelector("#wordcount");
 
-  if (running) time--;
+  if (running){
+    time--;
+    countdown--;
+  }
+
+  if (time == 0){
+    running = false;
+    alert("Congrats, you survived and met your goal!")
+  }
+
+  wordCount.innerHTML = countWords();
   timer.innerHTML = formatTime(time);
 };
 
@@ -57,3 +70,14 @@ const formatTime = (time) => {
 
   return min + ":" + sec;
 };
+
+const countWords = () => {
+    const editor = document.querySelector("#textbox").value;
+    words = editor.split(" ");
+
+    if (words[0] === "") return 0;
+
+    return words.length;
+    /// Currently, counts a new word as soon as a space is detected, look into regex?
+}
+
