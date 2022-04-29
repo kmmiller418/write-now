@@ -23,10 +23,6 @@ const setSettings = () => {
   time = document.querySelector('input[name="time"]').value * 60;
   grace = document.querySelector("select[name=grace-period]").value;
   countdown = grace;
-
-  console.log(difficulty);
-  console.log(time);
-  console.log(grace);
 };
 
 const startEditor = () => {
@@ -44,21 +40,18 @@ const startEditor = () => {
 };
 
 const tick = () => {
-  let timer = document.querySelector("#timer");
-  let wordCount = document.querySelector("#wordcount");
-
-  if (running){
+  if (running) {
     time--;
     countdown--;
   }
 
-  if (time == 0){
+  if (time == 0) {
     running = false;
-    alert("Congrats, you survived and met your goal!")
+    alert("Congrats, you survived and met your goal!");
   }
 
-  wordCount.innerHTML = countWords();
-  timer.innerHTML = formatTime(time);
+  setCount();
+  setTime();
 };
 
 const formatTime = (time) => {
@@ -72,16 +65,34 @@ const formatTime = (time) => {
 };
 
 const countWords = () => {
-    const editor = document.querySelector("#textbox").value;
-    words = editor.split(" ");
+  const editor = document.querySelector("#textbox").value;
+  editor = sanitizeWords(editor);
+  words = editor.split(" ");
 
-    if (words[0] === "") return 0;
+  if (words[0] === "") return 0;
 
-    return words.length;
-    /// Currently, counts a new word as soon as a space is detected, look into regex?
-}
+  return words.length;
+};
+
+const setTime = () => {
+  let timer = document.querySelector("#timer");
+  timer.innerHTML = formatTime(time);
+};
+
+const setCount = () => {
+  let wordCount = document.querySelector("#wordcount");
+  wordCount.innerHTML = countWords();
+};
+
+const sanitizeWords = (words) => {
+  words = words.replace(/^\s*|\s*$/g, "");
+  words = words.replace(/\s+/g, " ");
+  words = words.replace(/\n/g, " ");
+
+  return words;
+};
 
 // //TO DO :
 // implement timeSinceLastType() listener + consequences
-// bonuses? quote api could be neat 
+// bonuses? quote api could be neat
 // styling ugh
